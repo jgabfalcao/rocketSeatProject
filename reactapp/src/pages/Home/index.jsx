@@ -5,7 +5,22 @@ import { Card } from "../../components/Card";
 import { useState } from "react";
 
 export function Home() {
-  const [studentName, setStudentName] = useState();
+  const [studentName, setStudentName] = useState(); // ESTADO PARA PEGAR OQ ESTÁ SENDO DIGITADO NO INPUT
+
+  const [students, setStudents] = useState([]);
+
+  function handleAddStudent() {
+    const newStudent = {
+      name: studentName,
+      time: new Date().toLocaleTimeString("pt-br", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }),
+    };
+
+    setStudents((prevState) => [...prevState, newStudent]);
+  }
 
   return (
     <div className="container">
@@ -15,9 +30,12 @@ export function Home() {
         placeholder="Digite o nome..."
         onChange={(e) => setStudentName(e.target.value)}
       />
-      <button type="button">Adicionar</button>
-      <Card name="João" time="10:55:25" />
-      <Card name="Rodrigo" time="11:10:10" />
+      <button type="button" onClick={handleAddStudent}>
+        Adicionar
+      </button>
+      {students.map((student) => (
+        <Card name={student.name} time={student.time} />
+      ))}
     </div>
   );
 }
